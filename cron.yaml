@@ -1,0 +1,4 @@
+cron:
+- description: make sure pdroid is listening
+  url: /listen
+  schedule: every 10 minutes

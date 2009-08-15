@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if user %}
+<p>These are your MailHooks:<p>
+  <ul>
+    {% for hook in hooks %}
+    <li>{{ hook.name }}@mailhooks.com &rArr; {{ hook.hook_url }} <form style="display:inline;" action="/" method="post"><input type="hidden" name="name" value="{{ hook.name }}" /><input type="submit" value="Delete" /></form></li>
+    {% endfor %}
+  </ul>
+  <form action="/" method="post">
+    <input type="text" name="url" /> <input type="submit" value="Create MailHook" />
+    </form>
+  
+  
+{% else %}
+  <p>MailHooks lets you receive emails via HTTP POST (aka <a href="http://webhooks.org">webhooks</a>). You can create many hooks that will give you an email address @mailhooks.com that when emailed, the contents will be parsed and posted to the URL you specify as if it was a form post.</p>
+  <h2 align="center"><a href="{{ login_url }}">Login</a></h2>
+{% endif %}
+{% endblock %}
