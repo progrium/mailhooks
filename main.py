@@ -38,22 +38,19 @@ class MainHandler(webapp.RequestHandler):
             h.put()
         self.redirect('/')
 
-class RouterHandler(webapp.RequestHandler):
+class ReflectorHandler(webapp.RequestHandler):
     def post(self):
         name = self.request.POST['to'].split('@')[0]
         hook = MailHook.all().filter('name =', name).get()
-        params = dict(self.request.POST)
-        params['_url'] = hook.hook_url
-        urlfetch.fetch(url=HOOKAH_URL, payload=urllib.urlencode(params), method='POST')
-        self.response.out.write("ok")
+        self.redirect(hook.hook_url)
 
 class ListenHandler(webapp.RequestHandler):
     def get(self):
         try:
-            result = urlfetch.fetch(url=os.path.join(PDROID_URL, 'smtp:listen:25'))
+            result = urlfetch.fetch(url='?'.join([os.path.join(PDROID_URL, 'smtp:listen:25'), str(abs(hash(time.time())))]))
             if not result.content == PDROID_TOKEN:
                 resp = urlfetch.fetch(url=os.path.join(PDROID_URL, 'smtp:listen:25'), method='POST', 
-                            payload=urllib.urlencode({'callback':'http://www.mailhooks.com/router', 'token': PDROID_TOKEN}))
+                            payload=urllib.urlencode({'callback':'http://www.mailhooks.com/reflector', 'token': PDROID_TOKEN}))
                 if not resp.status_code == 202:
                     mail.send_mail(
                         sender="MailHooks <robot@mailhooks.com>",
@@ -85,7 +82,7 @@ class MailHook(db.Model):
         super(MailHook, self).__init__(*args, **kwargs)
 
 def main():
-    application = webapp.WSGIApplication([('/', MainHandler), ('/router', RouterHandler), ('/listen', ListenHandler)], debug=True)
+    application = webapp.WSGIApplication([('/', MainHandler), ('/reflector', ReflectorHandler), ('/listen', ListenHandler)], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
 
 if __name__ == '__main__':
