@@ -4,11 +4,11 @@
 <p>These are your MailHooks:<p>
   <ul>
     {% for hook in hooks %}
-    <li>{{ hook.name }}@mailhooks.com &rArr; {{ hook.hook_url }} <form style="display:inline;" action="/" method="post"><input type="hidden" name="name" value="{{ hook.name }}" /><input type="submit" value="Delete" /></form></li>
+    <li>{{ hook.name }}@mailhooks.com &rArr; <a href="{{ hook.hook_url }}">{{ hook.hook_url }}</a> <form style="display:inline;" action="/" method="post"><input type="hidden" name="name" value="{{ hook.name }}" /><input type="submit" value="Delete" /></form></li>
     {% endfor %}
   </ul>
   <form action="/" method="post">
-    <input type="text" name="url" /> <input type="submit" value="Create MailHook" />
+    Hook URL: <input type="text" name="url" /> <input type="submit" value="Create MailHook" />
     </form>
   
   

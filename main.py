@@ -10,7 +10,7 @@ from google.appengine.api import urlfetch
 from google.appengine.api import mail
 import time, urllib, os
 
-HOOKAH_URL = "http://hookah.webhooks.org"
+HOOKAH_URL = "http://hookah.progrium.com/dispatch"
 PDROID_URL = "http://pdroid.progrium.com"
 #PDROID_URL = "http://localhost:8080"
 PDROID_TOKEN = 'j083y7huf852s44s4sx4s4++__'
